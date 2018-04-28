@@ -7,6 +7,12 @@ MYSQL_DATABASE="${MYSQL_DATABASE:-sapphire}"
 # I think you get the gist
 MYSQL_HOST="${MYSQL_HOST:-localhost}"
 MYSQL_PORT="${MYSQL_PORT:-3306}"
+# If $MYSQL_PASSWORD is set, set $MYSQL_PWD accordingly, but don't set a
+# default if it's not set. This also allows the user to set $MYSQL_PWD
+# directly.
+if [ ! -z $MYSQL_PASSWORD ]; then
+  MYSQL_PWD=${MYSQL_PASSWORD}
+fi
 
 cd sql
 mysql -u ${MYSQL_USER} -h ${MYSQL_HOST} -P ${MYSQL_PORT} -e "create database if not exists ${MYSQL_DATABASE};"
