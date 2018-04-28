@@ -15,15 +15,15 @@ if [ ! -z $MYSQL_PASSWORD ]; then
 fi
 
 cd sql
-mysql -u ${MYSQL_USER} -h ${MYSQL_HOST} -P ${MYSQL_PORT} -e "create database if not exists ${MYSQL_DATABASE};"
+mysql -u ${MYSQL_USER} -p${MYSQL_PWD} -h ${MYSQL_HOST} -P ${MYSQL_PORT} -e "create database if not exists ${MYSQL_DATABASE};"
 for f in *.sql
   do
     [ "$f" = "update.sql" ] && continue;
     echo -n "importing $f into the database..."
-    mysql ${MYSQL_DATABASE} -u ${MYSQL_USER} -h ${MYSQL_HOST} -P ${MYSQL_PORT} < $f && echo "Success"
+    mysql ${MYSQL_DATABASE} -u ${MYSQL_USER} -p${MYSQL_PWD} -h ${MYSQL_HOST} -P ${MYSQL_PORT} < $f && echo "Success"
     CODE=$?
     if [ $CODE -ne 0 ]; then exit $CODE; fi
 done
-#mysql ${MYSQL_DATABASE} -u ${MYSQL_USER} -h ${MYSQL_HOST} -P ${MYSQL_PORT} < update.sql -f
+#mysql ${MYSQL_DATABASE} -u ${MYSQL_USER} -p${MYSQL_PWD} -h ${MYSQL_HOST} -P ${MYSQL_PORT} < update.sql -f
 echo 'todo: test update sql'
 cd ..
